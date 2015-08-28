@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<issues>
+  <issue>
+    <title>Volume 2, Issue 1, 1995</title>
+    <description>Second publication</description>
+    <volume>1</volume>
+    <number>2</number>
+    <year>1995</year>
+    <section>
+      <title>Research</title>
+      <article>
+        <title>Research article</title>
+        <abstract>A bit of research outpu</abstract>
+        <author>
+          <lastname>Fulano</lastname>
+          <firstname>Juan</firstname>
+          <email>juan@localhost.com</email>
+          <affiliation>Localhost, Inc.</affiliation>
+        </author>
+        <pages>6-10</pages>
+        <galley>
+          <label>Text</label>
+          <file>
+            <embed encoding="base64" filename="Volume1Issue2Research.txt" mime_type="text/plain">Vm9sdW1lMUlzc3VlMlJlc2VhcmNoLnBkZgo=</embed>
+          </file>
+        </galley>
+      </article>
+    </section>
+    <section>
+      <title>General</title>
+      <article>
+        <title>General article</title>
+        <abstract>Another general article</abstract>
+        <author>
+          <lastname>Doe</lastname>
+          <firstname>John</firstname>
+          <email>johndoe@localhost.com</email>
+          <affiliation>Localhost, Inc.</affiliation>
+        </author>
+        <pages>1-5</pages>
+        <galley>
+          <label>Text</label>
+          <file>
+            <embed encoding="base64" filename="Volume1Issue2General.txt" mime_type="text/plain">Vm9sdW1lMUlzc3VlMkdlbmVyYWwucGRmCg==</embed>
+          </file>
+        </galley>
+      </article>
+    </section>
+  </issue>
+  <issue>
+    <title>Volume 1, Issue 1, 1995</title>
+    <description>Introductory Issue</description>
+    <volume>1</volume>
+    <number>1</number>
+    <year>1995</year>
+    <section>
+      <title>General</title>
+      <article>
+        <title>Joint introductory article</title>
+        <abstract>An introductory joint article</abstract>
+        <author>
+          <lastname>Doe</lastname>
+          <firstname>Jane</firstname>
+          <email>janedoe@localhost.com</email>
+          <affiliation>Localhost, Inc.</affiliation>
+        </author>
+        <author>
+          <lastname>Toulemonde</lastname>
+          <firstname>Madame</firstname>
+          <email>madame@toulemond.fr</email>
+        </author>
+        <pages>10-20</pages>
+        <galley>
+          <label>Text</label>
+          <file>
+            <embed encoding="base64" filename="Volume1Issue1Joint.txt" mime_type="text/plain">Vm9sdW1lMUlzc3VlMUpvaW50LnBkZgoK</embed>
+          </file>
+        </galley>
+      </article>
+      <article>
+        <title>Introduction</title>
+        <abstract>An introduction to our Journal</abstract>
+        <author>
+          <lastname>Doe</lastname>
+          <firstname>John</firstname>
+          <email>johndoe@localhost.com</email>
+          <affiliation>Localhost, Inc.</affiliation>
+        </author>
+        <pages>1-2</pages>
+        <galley>
+          <label>Text</label>
+          <file>
+            <embed encoding="base64" filename="Volume1Issue1Introduction.txt" mime_type="text/plain">Vm9sdW1lMUlzc3VlMUludHJvZHVjdGlvbi5wZGY=</embed>
+          </file>
+        </galley>
+      </article>
+      <article>
+        <title>General article</title>
+        <abstract>An introductory general article</abstract>
+        <author>
+          <lastname>Doe</lastname>
+          <firstname>Jane</firstname>
+          <email>janedoe@localhost.com</email>
+          <affiliation>Localhost, Inc.</affiliation>
+        </author>
+        <pages>3-10</pages>
+        <galley>
+          <label>Text</label>
+          <file>
+            <embed encoding="base64" filename="Volume1Issue1General.txt" mime_type="text/plain">Vm9sdW1lMUlzc3VlMUdlbmVyYWwucGRmCg==</embed>
+          </file>
+        </galley>
+      </article>
+    </section>
+  </issue>
+</issues>

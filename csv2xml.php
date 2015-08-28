@@ -19,6 +19,7 @@
 
 /**
 * The SchemaWalker class reads a simple XSD and returns information about the structure via xpath strings
+* We are primarily concerned with xpaths that could contain text content and with xpaths that could be repeated
 **/
 class SchemaWalker {
 
@@ -47,6 +48,8 @@ class SchemaWalker {
   **/
   private $pathPlurality;
 
+  private $debug = false;
+
   /**
   * Constructor
   * @param string $filename Filename of the XSD
@@ -66,7 +69,12 @@ class SchemaWalker {
   * @param string $path Xpath to this element
   * @return array List of xpaths
   **/
-  protected function walkElements($element, $path = '') {
+  protected function walkElements($element, $path = NULL) {
+    $firstRun = false;
+    if ($path === NULL) {
+      $firstRun = true;
+      $path = '';
+    }
     $eleArray = array();
     // Process attributes first
     $elementDefs = $this->xpath->evaluate("xs:attribute", $element);
@@ -81,6 +89,9 @@ class SchemaWalker {
           $path = $path.'/'.$element->getAttribute('name');
           if ($element->getAttribute('type')) {
             $eleArray[] = $path;
+          }
+          // the plurality may have been set from a ref="element"
+          if (!isset($this->pathPlurality[$path])) { 
             $multiple = $element->getAttribute('maxOccurs') && ($element->getAttribute('maxOccurs') != '1');
             $this->pathPlurality[$path] = $multiple;
           }
@@ -112,6 +123,11 @@ class SchemaWalker {
       if ($elementDef->nodeName !== 'xs:attribute') {
         $eleArray = array_merge($eleArray, $this->walkElements($elementDef, $path));
       }
+    }
+
+    if ($this->debug && $firstRun) {
+      error_log(var_export($eleArray, true));
+      error_log(var_export($this->pathPlurality, true));
     }
     return $eleArray;
   }
@@ -233,7 +249,7 @@ class DataWalker {
   **/
   private $fileStore = 'filestore://';
 
-  private $debug = true;
+  private $debug = false;
 
   /**
   * Constructor
@@ -251,26 +267,35 @@ class DataWalker {
   public function parse() {
 
     $tmpPrefix = 'nat';
-
-    // Open the CSV file, rewite it, removing spurrious newlines because fgetcsv() can't handle them
-    $file = fopen($this->filename, 'r');
-    if (!$file) {
-      die('Failed to open '.$this->filename."\n");
-    }
     $tmpname = tempnam("/tmp", $tmpPrefix);
-    $tmpfile = fopen($tmpname, 'w');
-    if (!$tmpfile) {
-      die('Failed to open '.$tmpname."\n");
-    }
-    while ($line = fgets($file)) {
-      if (substr($line, -2) == "\r\n") {
-        fputs($tmpfile, $line);
-      } else {
-        fputs($tmpfile, substr($line, 0, strlen($line) - 1));
+
+    $csvContent = file_get_contents($this->filename);
+    // Check if this is CRLF terminated, LF terminated, or mixed
+    $crlfs = substr_count($csvContent, "\r\n");
+    $lfs = substr_count($csvContent, "\n");
+    if ($crlfs && $lfs > $crlfs) {
+      // Open the CSV file, rewite it, removing spurrious newlines because fgetcsv() can't handle them
+      $file = fopen($this->filename, 'r');
+      if (!$file) {
+        die('Failed to open '.$this->filename."\n");
       }
+      $tmpfile = fopen($tmpname, 'w');
+      if (!$tmpfile) {
+        die('Failed to open '.$tmpname."\n");
+      }
+      while ($line = fgets($file)) {
+        if (substr($line, -2) == "\r\n") {
+          fputs($tmpfile, $line);
+        } else {
+          fputs($tmpfile, substr($line, 0, strlen($line) - 1));
+        }
+      }
+      fclose($file);
+      fclose($tmpfile);
+    } else {
+      file_put_contents($tmpname, $csvContent);
     }
-    fclose($file);
-    fclose($tmpfile);
+    $csvContent = '';
     $tmpfile = fopen($tmpname, 'r');
     if (!$tmpfile) {
       die('Failed to open '.$tmpname."\n");

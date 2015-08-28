@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<xs:schema xmlns="http://pkp.sfu.ca/" elementFormDefault="qualified" targetNamespace="http://pkp.sfu.ca/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="issues">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="issue" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="articles">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="article" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="href">
+    <xs:complexType>
+      <xs:attribute name="src" type="xs:string" use="required" />
+      <xs:attribute name="mime_type" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="embed">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute fixed="base64" name="encoding" type="xs:string" />
+          <xs:attribute name="filename" type="xs:string" use="required" />
+          <xs:attribute name="mime_type" type="xs:string" use="required" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="remote">
+    <xs:complexType>
+      <xs:attribute name="src" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="id">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="type" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="title">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="description">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="date_published" type="xs:string" />
+  <xs:element name="open_access">
+    <xs:complexType />
+  </xs:element>
+  <xs:element name="license_url" type="xs:string" />
+  <xs:element name="copyright_holder">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="copyright_year" type="xs:string" />
+  <xs:element name="permissions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" ref="license_url" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="copyright_holder" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="copyright_year" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sponsor">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="subject">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="file">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="href" />
+        <xs:element ref="embed" />
+        <xs:element ref="remote" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="image">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="href" />
+        <xs:element ref="embed" />
+        <xs:element ref="remote" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="issue">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="id" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="title" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="description" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="volume" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="number" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="year" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="cover" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="date_published" />
+        <xs:choice minOccurs="0" maxOccurs="1">
+          <xs:element ref="access_date" />
+          <xs:element ref="open_access" />
+        </xs:choice>
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="section" />
+      </xs:sequence>
+      <xs:attribute default="title" name="identification">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="title" />
+            <xs:enumeration value="num_vol_year" />
+            <xs:enumeration value="vol" />
+            <xs:enumeration value="vol_year" />
+            <xs:enumeration value="year" />
+            <xs:enumeration value="num_vol_year_title" />
+            <xs:enumeration value="num_year_title" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="false" name="published">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="false" name="current">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="public_id" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="volume" type="xs:string" />
+  <xs:element name="number" type="xs:string" />
+  <xs:element name="year" type="xs:string" />
+  <xs:element name="access_date" type="xs:string" />
+  <xs:element name="cover">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" ref="caption" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="image" />
+      </xs:sequence>
+      <xs:attribute name="locale" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="caption" type="xs:string" />
+  <xs:element name="section">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="title" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="abbrev" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="identify_type" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="policy" />
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="article" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="abbrev">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="identify_type">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="policy">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="article">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="id" />
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="title" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="abstract" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="indexing" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="sponsor" />
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="author" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="pages" />
+        <xs:element ref="date_published" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="open_access" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="permissions" />
+        <xs:sequence minOccurs="1" maxOccurs="unbounded">
+          <xs:element minOccurs="0" maxOccurs="1" ref="galley" />
+          <xs:element minOccurs="0" maxOccurs="1" ref="htmlgalley" />
+        </xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="supplemental_file" />
+      </xs:sequence>
+      <xs:attribute name="public_id" type="xs:string" />
+      <xs:attribute name="locale" type="xs:string" />
+      <xs:attribute default="en" name="language" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="author">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="firstname" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="middlename" />
+        <xs:element ref="lastname" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="affiliation" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="country" />
+        <xs:element ref="email" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="url" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="competing_interests" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="biography" />
+      </xs:sequence>
+      <xs:attribute default="false" name="primary_contact">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="firstname" type="xs:string" />
+  <xs:element name="middlename" type="xs:string" />
+  <xs:element name="lastname" type="xs:string" />
+  <xs:element name="affiliation">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="country" type="xs:string" />
+  <xs:element name="email" type="xs:string" />
+  <xs:element name="url" type="xs:string" />
+  <xs:element name="competing_interests">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="biography">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="abstract">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="pages" type="xs:string" />
+  <xs:element name="indexing">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="discipline" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="type" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="subject" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="subject_class" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="coverage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="discipline">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="type">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="subject_class">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="coverage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="geographical" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="chronological" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="sample" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="geographical">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="chronological">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sample">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="label" type="xs:string" />
+  <xs:element name="stylesheet">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="href" />
+        <xs:element ref="embed" />
+        <xs:element ref="remote" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="galley">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="id" />
+        <xs:element ref="label" />
+        <xs:element ref="file" />
+      </xs:sequence>
+      <xs:attribute name="public_id" type="xs:string" />
+      <xs:attribute name="locale" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="htmlgalley">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="id" />
+        <xs:element ref="label" />
+        <xs:element ref="file" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="stylesheet" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="image" />
+      </xs:sequence>
+      <xs:attribute name="public_id" type="xs:string" />
+      <xs:attribute name="locale" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="supplemental_file">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="id" />
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="title" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="creator" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="subject" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="type_other" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="description" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="publisher" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="sponsor" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="date_created" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="source" />
+        <xs:element ref="file" />
+      </xs:sequence>
+      <xs:attribute default="other" name="type">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="research_instrument" />
+            <xs:enumeration value="research_materials" />
+            <xs:enumeration value="research_results" />
+            <xs:enumeration value="transcripts" />
+            <xs:enumeration value="data_analysis" />
+            <xs:enumeration value="data_set" />
+            <xs:enumeration value="source_text" />
+            <xs:enumeration value="other" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="en" name="language" type="xs:string" />
+      <xs:attribute default="false" name="show_reviewers">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="public_id" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="creator">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="type_other">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="publisher">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="date_created" type="xs:string" />
+  <xs:element name="source">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locale" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
