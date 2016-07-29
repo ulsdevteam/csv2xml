@@ -240,6 +240,11 @@ class DataWalker {
   private $rootElement;
 
   /**
+  * @var $sourceEncoding string The encoding of the input file
+  **/
+  private $sourceEncoding;
+
+  /**
   * @var $columnMap array
   **/
   private $columnMap;
@@ -257,10 +262,11 @@ class DataWalker {
   * @param string $schemaname Filename of the XSD
   * @param string $rootelement Root element name
   **/
-  public function __construct($filename, $schemaname, $rootelement) {
+  public function __construct($filename, $schemaname, $rootelement, $sourceEncoding) {
     $this->filename = $filename;
     $this->schemaFilename = $schemaname;
     $this->rootElement = $rootelement;
+    $this->sourceEncoding = ($sourceEncoding ? $sourceEncoding : 'WINDOWS-1252');
     $this->walker = new SchemaWalker($this->schemaFilename, $this->rootElement);
   }
 
@@ -500,7 +506,10 @@ class DataWalker {
     if ($this->debug) { error_log(' %creating '.$xpath); }
     if (strpos($xpath, '@') !== false) {
       $e = $this->dom->createAttribute( array_pop(explode('@', $xpath)) );
-      $e->value = htmlspecialchars(utf8_encode($value), ENT_NOQUOTES);
+      if ($this->sourceEncoding !== 'UTF=8') {
+        $value = iconv($this->sourceEncoding, 'UTF-8', $value);
+      }
+      $e->value = htmlspecialchars($value, ENT_NOQUOTES);
     } else {
       $e = $this->dom->createElement( array_pop(explode('/', $xpath)) );
       // add each member to the element
@@ -511,7 +520,10 @@ class DataWalker {
         $this->context[$xpath] = array();
       }
       if ($value) {
-        $t = $this->dom->createTextNode( utf8_encode($value) );
+        if ($this->sourceEncoding !== 'UTF=8') {
+          $value = iconv($this->sourceEncoding, 'UTF-8', $value);
+        }
+        $t = $this->dom->createTextNode($value);
         $e->appendChild($t);
       }
     }
@@ -687,10 +699,11 @@ class DataWalker {
 
 // Application: read a CSV file to create an XML based on the root element and the schema specified
 if (count($argv) < 4) {
-  die('Usage: '.$argv[0].' <schema.xsd> <rootElement> <file.csv>'."\n");
+  die('Usage: '.$argv[0].' <schema.xsd> <rootElement> <file.csv> [ICONV_SOURCE_ENCODING]'."\n");
 }
 
-$reader = new DataWalker($argv[3], $argv[1], $argv[2]);
+$encoding = (isset($argv[4]) ? $argv[4] : null);
+$reader = new DataWalker($argv[3], $argv[1], $argv[2], $encoding);
 print $reader->parse();
 exit;
 
